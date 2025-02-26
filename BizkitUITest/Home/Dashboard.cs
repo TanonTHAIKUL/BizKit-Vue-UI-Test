@@ -63,6 +63,7 @@ namespace Home
                 //Logout
                 var profileButton = wait.Until(d => d.FindElement(By.XPath("//button[span[text()='Profile']]")));
                 profileButton.Click();
+                Thread.Sleep(3000);
                 var logoutButton = wait.Until(d => d.FindElement(By.XPath("//a[contains(., 'Logout')]")));
                 logoutButton.Click();
                 Thread.Sleep(3000);
