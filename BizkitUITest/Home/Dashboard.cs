@@ -1,4 +1,4 @@
-using Xunit;
+ï»¿using Xunit;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Threading;
@@ -9,17 +9,18 @@ using System;
 using System.Linq;
 using Xunit.Abstractions;
 using SeleniumExtras.WaitHelpers;
+using Xunit.Sdk;
 
 namespace Home
 {
     [Collection("Sequential Tests")]
     public class Dashboard
     {
-        private readonly ITestOutputHelper testOutputHelper;
+        private readonly ITestOutputHelper _testOutputHelper;
 
         public Dashboard(ITestOutputHelper testOutputHelper)
         {
-            this.testOutputHelper = testOutputHelper;
+            _testOutputHelper = testOutputHelper;
         }
 
         private const string loginUrl = "http://116.206.127.86:8003/login";
@@ -30,7 +31,7 @@ namespace Home
             using (IWebDriver driver = new ChromeDriver())
             {
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                //¢ÂÒÂãËéàµçÁ¨Íà¾×èÍ¡Ñ¹»Ñ­ËÒá¶º·Ò§«éÒÂËÒÂ
+                //à¸‚à¸¢à¸²à¸¢à¹ƒà¸«à¹‰à¹€à¸•à¹‡à¸¡à¸ˆà¸­à¹€à¸žà¸·à¹ˆà¸­à¸à¸±à¸™à¸›à¸±à¸à¸«à¸²à¹à¸–à¸šà¸—à¸²à¸‡à¸‹à¹‰à¸²à¸¢à¸«à¸²à¸¢
                 driver.Manage().Window.Maximize();
                 //Login
                 driver.Navigate().GoToUrl(loginUrl);
@@ -40,7 +41,19 @@ namespace Home
                 password.SendKeys("QuiZtaE033!");
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
-                Thread.Sleep(5000);
+
+                //à¸£à¸­à¸«à¸™à¹‰à¸²à¹€à¸§à¹‡à¸šà¹‚à¸«à¸¥à¸”à¹à¸¥à¸°à¸•à¸£à¸§à¸ˆà¸ªà¸­à¸šà¸§à¹ˆà¸²à¹€à¸‚à¹‰à¸²à¸ªà¸¹à¸«à¸™à¹‰à¸² Dashboard à¹„à¸”à¹‰à¸«à¸£à¸·à¸­à¹„à¸¡à¹ˆà¸ˆà¸²à¸à¸à¸²à¸£à¸„à¹‰à¸™à¸«à¸²à¸„à¸³à¸§à¹ˆà¸² Dashboard à¸•à¸£à¸‡à¹à¸–à¸š Breadcrumb à¸”à¹‰à¸²à¸™à¸šà¸™
+                try
+                {
+                    wait.Until(d => d.FindElement(By.XPath("//span[contains(text(), 'Dashboard')]")));
+                    _testOutputHelper.WriteLine("âœ” Test Passed: Dashboard page is accessible.");
+                }
+                catch (WebDriverTimeoutException)
+                {
+                    _testOutputHelper.WriteLine("âŒ Test Failed: Dashboard breadcrumb not found.");
+                    //à¸£à¸°à¸šà¸¸à¸§à¹ˆà¸² Test Failed
+                    Assert.Fail("Failed to access the Dashboard page.");
+                }
             }
         }
         [Fact]
@@ -49,7 +62,7 @@ namespace Home
             using (IWebDriver driver = new ChromeDriver())
             {
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                //¢ÂÒÂãËéàµçÁ¨Íà¾×èÍ¡Ñ¹»Ñ­ËÒá¶º·Ò§«éÒÂËÒÂ
+                //à¸‚à¸¢à¸²à¸¢à¹ƒà¸«à¹‰à¹€à¸•à¹‡à¸¡à¸ˆà¸­à¹€à¸žà¸·à¹ˆà¸­à¸à¸±à¸™à¸›à¸±à¸à¸«à¸²à¹à¸–à¸šà¸—à¸²à¸‡à¸‹à¹‰à¸²à¸¢à¸«à¸²à¸¢
                 driver.Manage().Window.Maximize();
                 //Login
                 driver.Navigate().GoToUrl(loginUrl);
@@ -78,7 +91,7 @@ namespace Home
             using (IWebDriver driver = new ChromeDriver())
             {
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                //¢ÂÒÂãËéàµçÁ¨Íà¾×èÍ¡Ñ¹»Ñ­ËÒá¶º·Ò§«éÒÂËÒÂ
+                //à¸‚à¸¢à¸²à¸¢à¹ƒà¸«à¹‰à¹€à¸•à¹‡à¸¡à¸ˆà¸­à¹€à¸žà¸·à¹ˆà¸­à¸à¸±à¸™à¸›à¸±à¸à¸«à¸²à¹à¸–à¸šà¸—à¸²à¸‡à¸‹à¹‰à¸²à¸¢à¸«à¸²à¸¢
                 driver.Manage().Window.Maximize();
                 //Login
                 driver.Navigate().GoToUrl(loginUrl);
@@ -89,7 +102,7 @@ namespace Home
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
-                //¡´»ØèÁà»ÅÕèÂ¹âËÁ´Á×´áÅÐÊÇèÒ§
+                //à¸à¸”à¸›à¸¸à¹ˆà¸¡à¹€à¸›à¸¥à¸µà¹ˆà¸¢à¸™à¹‚à¸«à¸¡à¸”à¸¡à¸·à¸”à¹à¸¥à¸°à¸ªà¸§à¹ˆà¸²à¸‡
                 Thread.Sleep(3000);
                 var sunButton = wait.Until(d => d.FindElement(By.XPath("//button[i[contains(@class, 'pi-sun')]]")));
                 sunButton.Click();
@@ -105,7 +118,7 @@ namespace Home
             using (IWebDriver driver = new ChromeDriver())
             {
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                //¢ÂÒÂãËéàµçÁ¨Íà¾×èÍ¡Ñ¹»Ñ­ËÒá¶º·Ò§«éÒÂËÒÂ
+                //à¸‚à¸¢à¸²à¸¢à¹ƒà¸«à¹‰à¹€à¸•à¹‡à¸¡à¸ˆà¸­à¹€à¸žà¸·à¹ˆà¸­à¸à¸±à¸™à¸›à¸±à¸à¸«à¸²à¹à¸–à¸šà¸—à¸²à¸‡à¸‹à¹‰à¸²à¸¢à¸«à¸²à¸¢
                 driver.Manage().Window.Maximize();
                 //Login
                 driver.Navigate().GoToUrl(loginUrl);
@@ -116,77 +129,77 @@ namespace Home
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
-                //¡´»ØèÁ¶Ò´ÊÕ
+                //à¸à¸”à¸›à¸¸à¹ˆà¸¡à¸–à¸²à¸”à¸ªà¸µ
                 Thread.Sleep(3000);
                 var paletteButton = wait.Until(d => d.FindElement(By.XPath("//button[i[contains(@class, 'pi-palette')]]")));
                 paletteButton.Click();
                 Thread.Sleep(2000);
 
-                //¡´àÅ×Í¡·ÕÅÐÊÕ àÃÔèÁ¨Ò¡ÊÕ´Ó·Ò§«éÒÂ
+                //à¸à¸”à¹€à¸¥à¸·à¸­à¸à¸—à¸µà¸¥à¸°à¸ªà¸µ à¹€à¸£à¸´à¹ˆà¸¡à¸ˆà¸²à¸à¸ªà¸µà¸”à¸³à¸—à¸²à¸‡à¸‹à¹‰à¸²à¸¢
                 var noirButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='noir']")));
                 noirButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕÁÃ¡µ
+                //à¸ªà¸µà¸¡à¸£à¸à¸•
                 var emeraldButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='emerald']")));
                 emeraldButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕà¢ÕÂÇ
+                //à¸ªà¸µà¹€à¸‚à¸µà¸¢à¸§
                 var greenButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='green']")));
                 greenButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕà¢ÕÂÇÁÐ¹ÒÇ
+                //à¸ªà¸µà¹€à¸‚à¸µà¸¢à¸§à¸¡à¸°à¸™à¸²à¸§
                 var limeButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='lime']")));
                 limeButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕÊéÁ
+                //à¸ªà¸µà¸ªà¹‰à¸¡
                 var orangeButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='orange']")));
                 orangeButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕàËÅ×Í§ÍÓ¾Ñ¹
+                //à¸ªà¸µà¹€à¸«à¸¥à¸·à¸­à¸‡à¸­à¸³à¸žà¸±à¸™
                 var amberButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='amber']")));
                 amberButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕàËÅ×Í§
+                //à¸ªà¸µà¹€à¸«à¸¥à¸·à¸­à¸‡
                 var yellowButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='yellow']")));
                 yellowButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕà¢ÕÂÇ·ÐàÅ
+                //à¸ªà¸µà¹€à¸‚à¸µà¸¢à¸§à¸—à¸°à¹€à¸¥
                 var tealButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='teal']")));
                 tealButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ¿éÒÍÁà¢ÕÂÇ
+                //à¸ªà¸µà¸Ÿà¹‰à¸²à¸­à¸¡à¹€à¸‚à¸µà¸¢à¸§
                 var cyanButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='cyan']")));
                 cyanButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ¿éÒ
+                //à¸ªà¸µà¸Ÿà¹‰à¸²
                 var skyButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='sky']")));
                 skyButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ¹éÓà§Ô¹
+                //à¸ªà¸µà¸™à¹‰à¸³à¹€à¸‡à¸´à¸™
                 var blueButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='blue']")));
                 blueButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ¤ÃÒÁ
+                //à¸ªà¸µà¸„à¸£à¸²à¸¡
                 var indigoButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='indigo']")));
                 indigoButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕÁèÇ§àÁç´ÁÐ»ÃÒ§
+                //à¸ªà¸µà¸¡à¹ˆà¸§à¸‡à¹€à¸¡à¹‡à¸”à¸¡à¸°à¸›à¸£à¸²à¸‡
                 var violetButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='violet']")));
                 violetButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕÁèÇ§
+                //à¸ªà¸µà¸¡à¹ˆà¸§à¸‡
                 var purpleButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='purple']")));
                 purpleButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕºÒ¹àÂç¹
+                //à¸ªà¸µà¸šà¸²à¸™à¹€à¸¢à¹‡à¸™
                 var fuchsiaButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='fuchsia']")));
                 fuchsiaButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕªÁ¾Ù
+                //à¸ªà¸µà¸Šà¸¡à¸žà¸¹
                 var pinkButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='pink']")));
                 pinkButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕªÁ¾Ù¡ØËÅÒº
+                //à¸ªà¸µà¸Šà¸¡à¸žà¸¹à¸à¸¸à¸«à¸¥à¸²à¸š
                 var roseButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='rose']")));
                 roseButton.Click();
                 Thread.Sleep(2000);
@@ -198,7 +211,7 @@ namespace Home
             using (IWebDriver driver = new ChromeDriver())
             {
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                //¢ÂÒÂãËéàµçÁ¨Íà¾×èÍ¡Ñ¹»Ñ­ËÒá¶º·Ò§«éÒÂËÒÂ
+                //à¸‚à¸¢à¸²à¸¢à¹ƒà¸«à¹‰à¹€à¸•à¹‡à¸¡à¸ˆà¸­à¹€à¸žà¸·à¹ˆà¸­à¸à¸±à¸™à¸›à¸±à¸à¸«à¸²à¹à¸–à¸šà¸—à¸²à¸‡à¸‹à¹‰à¸²à¸¢à¸«à¸²à¸¢
                 driver.Manage().Window.Maximize();
                 //Login
                 driver.Navigate().GoToUrl(loginUrl);
@@ -209,37 +222,37 @@ namespace Home
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
-                //¡´»ØèÁ¶Ò´ÊÕ
+                //à¸à¸”à¸›à¸¸à¹ˆà¸¡à¸–à¸²à¸”à¸ªà¸µ
                 Thread.Sleep(3000);
                 var paletteButton = wait.Until(d => d.FindElement(By.XPath("//button[i[contains(@class, 'pi-palette')]]")));
                 paletteButton.Click();
                 Thread.Sleep(2000);
 
-                //¡´àÅ×Í¡·ÕÅÐÊÕ àÃÔèÁ¨Ò¡ÊÕà·Ò
+                //à¸à¸”à¹€à¸¥à¸·à¸­à¸à¸—à¸µà¸¥à¸°à¸ªà¸µ à¹€à¸£à¸´à¹ˆà¸¡à¸ˆà¸²à¸à¸ªà¸µà¹€à¸—à¸²
                 var grayButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='gray']")));
                 grayButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ zinc
+                //à¸ªà¸µ zinc
                 var zincButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='zinc']")));
                 zincButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ neutral
+                //à¸ªà¸µ neutral
                 var neutralButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='neutral']")));
                 neutralButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ stone
+                //à¸ªà¸µ stone
                 var stoneButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='stone']")));
                 stoneButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ soho
+                //à¸ªà¸µ soho
                 var sohoButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='soho']")));
                 sohoButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ viva
+                //à¸ªà¸µ viva
                 var vivaButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='viva']")));
                 vivaButton.Click();
                 Thread.Sleep(2000);
-                //ÊÕ ocean
+                //à¸ªà¸µ ocean
                 var oceanButton = wait.Until(d => d.FindElement(By.XPath("//button[@title='ocean']")));
                 oceanButton.Click();
                 Thread.Sleep(2000);
@@ -251,7 +264,7 @@ namespace Home
             using (IWebDriver driver = new ChromeDriver())
             {
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                //¢ÂÒÂãËéàµçÁ¨Íà¾×èÍ¡Ñ¹»Ñ­ËÒá¶º·Ò§«éÒÂËÒÂ
+                //à¸‚à¸¢à¸²à¸¢à¹ƒà¸«à¹‰à¹€à¸•à¹‡à¸¡à¸ˆà¸­à¹€à¸žà¸·à¹ˆà¸­à¸à¸±à¸™à¸›à¸±à¸à¸«à¸²à¹à¸–à¸šà¸—à¸²à¸‡à¸‹à¹‰à¸²à¸¢à¸«à¸²à¸¢
                 driver.Manage().Window.Maximize();
                 //Login
                 driver.Navigate().GoToUrl(loginUrl);
@@ -262,12 +275,12 @@ namespace Home
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
-                //¡´»ØèÁ¶Ò´ÊÕ
+                //à¸à¸”à¸›à¸¸à¹ˆà¸¡à¸–à¸²à¸”à¸ªà¸µ
                 Thread.Sleep(3000);
                 var paletteButton = wait.Until(d => d.FindElement(By.XPath("//button[i[contains(@class, 'pi-palette')]]")));
                 paletteButton.Click();
 
-                //¡´»ØèÁà»ÅÕèÂ¹ Preset
+                //à¸à¸”à¸›à¸¸à¹ˆà¸¡à¹€à¸›à¸¥à¸µà¹ˆà¸¢à¸™ Preset
                 Thread.Sleep(3000);
                 var laraButton = wait.Until(d => d.FindElement(By.XPath("//span[text()='Lara']")));
                 laraButton.Click();
@@ -276,7 +289,7 @@ namespace Home
                 auraButton.Click();
                 Thread.Sleep(3000);
 
-                //¡´»ØèÁà»ÅÕèÂ¹ Menu Mode
+                //à¸à¸”à¸›à¸¸à¹ˆà¸¡à¹€à¸›à¸¥à¸µà¹ˆà¸¢à¸™ Menu Mode
                 var overlayButton = wait.Until(d => d.FindElement(By.XPath("//span[text()='Overlay']")));
                 overlayButton.Click();
                 Thread.Sleep(3000);
@@ -291,7 +304,7 @@ namespace Home
             using (IWebDriver driver = new ChromeDriver())
             {
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                //¢ÂÒÂãËéàµçÁ¨Íà¾×èÍ¡Ñ¹»Ñ­ËÒá¶º·Ò§«éÒÂËÒÂ
+                //à¸‚à¸¢à¸²à¸¢à¹ƒà¸«à¹‰à¹€à¸•à¹‡à¸¡à¸ˆà¸­à¹€à¸žà¸·à¹ˆà¸­à¸à¸±à¸™à¸›à¸±à¸à¸«à¸²à¹à¸–à¸šà¸—à¸²à¸‡à¸‹à¹‰à¸²à¸¢à¸«à¸²à¸¢
                 driver.Manage().Window.Maximize();
                 //Login
                 driver.Navigate().GoToUrl(loginUrl);
@@ -302,14 +315,14 @@ namespace Home
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
-                //¡´»ØèÁÅÙ¡âÅ¡
+                //à¸à¸”à¸›à¸¸à¹ˆà¸¡à¸¥à¸¹à¸à¹‚à¸¥à¸
                 Thread.Sleep(3000);
                 var globeButton = wait.Until(d => d.FindElement(By.XPath("//button[i[contains(@class, 'pi-globe')]]")));
                 globeButton.Click();
 
-                //¡´à»ÅÕèÂ¹ÀÒÉÒä·Â-ÍÑ§¡ÄÉ
+                //à¸à¸”à¹€à¸›à¸¥à¸µà¹ˆà¸¢à¸™à¸ à¸²à¸©à¸²à¹„à¸—à¸¢-à¸­à¸±à¸‡à¸à¸¤à¸©
                 Thread.Sleep(3000);
-                var thaibutton = wait.Until(d => d.FindElement(By.XPath("//li[@aria-label='ÀÒÉÒä·Â']")));
+                var thaibutton = wait.Until(d => d.FindElement(By.XPath("//li[@aria-label='à¸ à¸²à¸©à¸²à¹„à¸—à¸¢']")));
                 thaibutton.Click();
                 Thread.Sleep(3000);
                 var engButton = wait.Until(d => d.FindElement(By.XPath("//li[@aria-label='English']")));
