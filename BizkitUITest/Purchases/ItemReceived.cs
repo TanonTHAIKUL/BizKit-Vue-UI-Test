@@ -13,11 +13,11 @@ using SeleniumExtras.WaitHelpers;
 namespace Purchases
 {
     [Collection("Sequential Tests")]
-    public class ItemReceied
+    public class ItemReceived
     {
         private readonly ITestOutputHelper testOutputHelper;
 
-        public ItemReceied(ITestOutputHelper testOutputHelper)
+        public ItemReceived(ITestOutputHelper testOutputHelper)
         {
             this.testOutputHelper = testOutputHelper;
         }
