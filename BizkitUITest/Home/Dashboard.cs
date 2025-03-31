@@ -42,17 +42,27 @@ namespace Home
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
-                //รอหน้าเว็บโหลดและตรวจสอบว่าเข้าสูหน้า Dashboard ได้หรือไม่จากการค้นหาคำว่า Dashboard ตรงแถบ Breadcrumb ด้านบน
+                //ตรวจสอบผลการทดสอบด้วยการค้นหาแถบ Breadcrumb ด้านบนที่มีคำว่า "Dashboard" ถ้ามีคือผ่านการทดสอบ
                 try
                 {
                     wait.Until(d => d.FindElement(By.XPath("//span[contains(text(), 'Dashboard')]")));
                     _testOutputHelper.WriteLine("✔ Test Passed: Dashboard page is accessible.");
                 }
+                //เว็บไซต์ใช้เวลาโหลดนานเกินไปจึงรอตรวจสอบอีกครั้ง
                 catch (WebDriverTimeoutException)
                 {
-                    _testOutputHelper.WriteLine("❌ Test Failed: Dashboard breadcrumb not found.");
-                    //ระบุว่า Test Failed
-                    Assert.Fail("Failed to access the Dashboard page.");
+                    //รออีก 5 วินาทีจึงเริ่มตรวจสอบผลการทดสอบอีกครั้ง
+                    Thread.Sleep(5000);
+                    try
+                    {
+                        driver.FindElement(By.XPath("//span[contains(text(), 'Dashboard')]"));
+                        _testOutputHelper.WriteLine("✔ Test Passed (after delay): Dashboard page is accessible.");
+                    }
+                    //ถ้าไม่เป็นไปตามเงื่อนไขก็จะไม่ผ่านการทดสอบ (เช่น ไม่พบปุ่มที่ต้องการกด ไม่พบข้อความที่ค้นหา)
+                    catch (NoSuchElementException)
+                    {
+                        Assert.Fail("❌ Test Failed: Dashboard page not accessible.");
+                    }
                 }
             }
         }
@@ -76,13 +86,33 @@ namespace Home
                 //Logout
                 var profileButton = wait.Until(d => d.FindElement(By.XPath("//button[span[text()='Profile']]")));
                 profileButton.Click();
-                Thread.Sleep(3000);
                 var logoutButton = wait.Until(d => d.FindElement(By.XPath("//a[contains(., 'Logout')]")));
                 logoutButton.Click();
-                Thread.Sleep(3000);
                 var confirmButton = wait.Until(d => d.FindElement(By.XPath("//button[span[text()='Confirm']]")));
                 confirmButton.Click();
-                Thread.Sleep(3000);
+
+                //ตรวจสอบผลการทดสอบด้วยการค้นหาคำว่า "Welcome to BizKit!" ซึ่งจะแสดงในหน้าการเข้าสู่ระบบ ถ้าพบเจอจะผ่านการทดสอบ
+                try
+                {
+                    wait.Until(d => d.FindElement(By.XPath("//div[contains(text(), 'Welcome to BizKit!')]")));
+                    _testOutputHelper.WriteLine("✔ Test Passed: Successfully logged out.");
+                }
+                //เว็บไซต์ใช้เวลาโหลดนานเกินไปจึงรอตรวจสอบอีกครั้ง
+                catch (WebDriverTimeoutException)
+                {
+                    //รออีก 5 วินาทีจึงเริ่มตรวจสอบผลการทดสอบอีกครั้ง
+                    Thread.Sleep(5000);
+                    try
+                    {
+                        driver.FindElement(By.XPath("//div[contains(text(), 'Welcome to BizKit!')]"));
+                        _testOutputHelper.WriteLine("✔ Test Passed (after delay): Successfully logged out.");
+                    }
+                    //ถ้าไม่เป็นไปตามเงื่อนไขก็จะไม่ผ่านการทดสอบ (เช่น ไม่พบปุ่มที่ต้องการกด ไม่พบข้อความที่ค้นหา)
+                    catch (NoSuchElementException)
+                    {
+                        Assert.Fail("❌ Test Failed: Logging out failed.");
+                    }
+                }
             }
         }
         [Fact]

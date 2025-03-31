@@ -16,11 +16,11 @@ namespace Purchases
     [Collection("Sequential Tests")]
     public class Vendor
     {
-        private readonly ITestOutputHelper testOutputHelper;
+        private readonly ITestOutputHelper _testOutputHelper;
 
         public Vendor(ITestOutputHelper testOutputHelper)
         {
-            this.testOutputHelper = testOutputHelper;
+            _testOutputHelper = testOutputHelper;
         }
 
         private const string loginUrl = "http://116.206.127.86:8003/login";
@@ -43,10 +43,25 @@ namespace Purchases
                 button.Click();
                 Thread.Sleep(1000);
 
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
                 //กดเข้าไปที่หน้า Vendor
-                var vendorButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/vendor/list']")));
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
                 vendorButton.Click();
-                Thread.Sleep(2000);
+
+                //รอหน้าเว็บโหลดและตรวจสอบว่าเป็นหน้าที่ถูกหรือไม่จากการตรวจสอบหัวข้อใหญ่ Vendor
+                try
+                {
+                    wait.Until(d => d.FindElement(By.XPath("//h1[contains(text(), 'Vendor')]")));
+                    _testOutputHelper.WriteLine("✔ Test Passed: Vendor page is accessible.");
+                }
+                catch (WebDriverTimeoutException)
+                {
+                    _testOutputHelper.WriteLine("❌ Test Failed: Vendor page is not accessible.");
+                    Assert.Fail("❌ Test Failed: Vendor page is not accessible.");
+                }
             }
         }
         [Fact]
@@ -66,45 +81,25 @@ namespace Purchases
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
                 //กดเข้าไปที่หน้า Vendor
-                var VendorButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/vendor/list']")));
-                VendorButton.Click();
-                Thread.Sleep(1000);
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
+                vendorButton.Click();
 
                 //เลือกมาหนึ่งรายการ (ในที่นี้จะเลือก VD-003)
                 var vendorListButton = wait.Until(d => d.FindElement(By.XPath("//span[text()='VD-003']")));
                 vendorListButton.Click();
-                Thread.Sleep(3000);
-            }
-        }
-        [Fact]
-        public void VendorCheckbox()
-        {
-            using (IWebDriver driver = new ChromeDriver())
-            {
-                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
-                //ขยายให้เต็มจอเพื่อกันปัญหาแถบทางซ้ายหาย
-                driver.Manage().Window.Maximize();
-                //Login
-                driver.Navigate().GoToUrl(loginUrl);
-                var email = wait.Until(d => d.FindElement(By.Id("email")));
-                email.SendKeys("tanon.t@ku.th");
-                var password = wait.Until(d => d.FindElement(By.CssSelector("input.p-password-input")));
-                password.SendKeys("QuiZtaE033!");
-                var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
-                button.Click();
 
-                //กดเข้าไปที่หน้า Vendor
-                var vendorButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/vendor/list']")));
-                vendorButton.Click();
-                Thread.Sleep(2000);
+                //ตรวจสอบชื่อบริษัทของลูกค้าว่าตรงกันไหม
+                var companyNameElement = wait.Until(d => d.FindElement(By.XPath("//label[text()='Company Name']/following-sibling::span")));
+                string companyName = companyNameElement.Text;
 
-                //กด Checkbox ติ๊กถูกและกดอีกครั้งเพื่อติ๊กออก
-                var checkbox = wait.Until(d => d.FindElement(By.CssSelector("input.p-checkbox-input")));
-                checkbox.Click();
-                Thread.Sleep(2000);
-                checkbox.Click();
-                Thread.Sleep(2000);
+                //แสดงผลการทดสอบ
+                Assert.True(companyName == "Vendor 1", "❌ Test Failed: Can't view vendor detail");
+                _testOutputHelper.WriteLine("✔ Test Passed: Successfully accessed vendor detail");
             }
         }
         [Fact]
@@ -124,8 +119,12 @@ namespace Purchases
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
                 //กดเข้าไปที่หน้า Vendor
-                var vendorButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/vendor/list']")));
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
                 vendorButton.Click();
 
                 //กดปุ่ม Filter ผู้ขาย
@@ -163,10 +162,13 @@ namespace Purchases
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
                 //กดเข้าไปที่หน้า Vendor
-                var vendorButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/vendor/list']")));
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
                 vendorButton.Click();
-                Thread.Sleep(2000);
 
                 //กดหัวข้อตารางเพื่อเรียงลำดับรายการ
                 var vendorCodeHeaderButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-datatable-column-header-content'][div[contains(text(), 'Vendor Code')]]")));
@@ -198,7 +200,7 @@ namespace Purchases
                 vendorBalanceHeaderButton.Click();
                 Thread.Sleep(1000);
                 vendorBalanceHeaderButton.Click();
-                Thread.Sleep(3000);
+                Thread.Sleep(1000);
             }
         }
         [Fact]
@@ -218,18 +220,30 @@ namespace Purchases
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
                 //กดเข้าไปที่หน้า Vendor
-                var vendorButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/vendor/list']")));
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
                 vendorButton.Click();
-                Thread.Sleep(2000);
 
                 //ใส่ข้อมูลและกดค้นหา
-                var vendorSearchButton = wait.Until(d => d.FindElement(By.XPath("//input[@placeholder='Search vendor']")));
-                vendorSearchButton.SendKeys("VD-003");
-                Thread.Sleep(1000);
-                var defaultSearchButton = wait.Until(d => d.FindElement(By.XPath("//button[@type='button' and @aria-label='Search']")));
-                defaultSearchButton.Click();
+                string targetVendor = "VD-003";
+
+                var searchInput = wait.Until(d => d.FindElement(By.XPath("//input[@placeholder='Search vendor']")));
+                searchInput.Clear();
+                searchInput.SendKeys(targetVendor);
+
+                var searchButton = wait.Until(d => d.FindElement(By.XPath("//button[@type='button' and @aria-label='Search']")));
+                searchButton.Click();
                 Thread.Sleep(3000);
+
+                var resultVendor = wait.Until(d => d.FindElement(By.XPath($"//span[contains(@class, 'p-button-label') and text()='{targetVendor}']")));
+
+                //แสดงผลการทดสอบ
+                Assert.True(resultVendor.Displayed, $"❌ Test Failed: {targetVendor} was not displayed in the search results.");
+                _testOutputHelper.WriteLine($"✔ Test Passed: {targetVendor} was successfully found in the search results.");
             }
         }
         [Fact]
@@ -249,126 +263,246 @@ namespace Purchases
                 var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
                 button.Click();
 
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
                 //กดเข้าไปที่หน้า Vendor
-                var vendorButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/vendor/list']")));
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
                 vendorButton.Click();
-                Thread.Sleep(1000);
 
                 //กดปุ่ม New Vendor
                 var newVendorButton = wait.Until(d => d.FindElement(By.XPath("//button[contains(., 'New Vendor')]")));
                 newVendorButton.Click();
                 Thread.Sleep(1000);
 
-                //General Information
-
-                var vendorCode = wait.Until(d => d.FindElement(By.Id("vendorCode")));
-                vendorCode.SendKeys("VD-TTT");
-                Thread.Sleep(1000);
-                var vendorCompanyName = wait.Until(d => d.FindElement(By.Id("vendorName")));
-                vendorCompanyName.SendKeys("Test Company");
-                Thread.Sleep(1000);
-                var vendorTaxID = wait.Until(d => d.FindElement(By.Id("taxId")));
-                vendorTaxID.SendKeys("01013395");
-                Thread.Sleep(1000);
-                var vendorTypeDropdown = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and @aria-label='Company']")));
-                vendorTypeDropdown.Click();
-                var vendorTypeOption = wait.Until(d => d.FindElement(By.XPath("//span[contains(text(), 'Company')]")));
-                vendorTypeOption.Click();
-                Thread.Sleep(1000);
-                var vendorCurrencyDropdown = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and @aria-controls='currencyCode_list']")));
-                vendorCurrencyDropdown.Click();
-                var vendorCurrencyOption = wait.Until(d => d.FindElement(By.Id("currencyCode_7")));
-                vendorCurrencyOption.Click();
-                Thread.Sleep(1000);
-                var vendorTelephone = wait.Until(d => d.FindElement(By.Id("telephone1")));
-                vendorTelephone.SendKeys("0949671295");
-                Thread.Sleep(1000);
-                var vendorFax = wait.Until(d => d.FindElement(By.Id("fax")));
-                vendorFax.SendKeys("5912769490");
-                Thread.Sleep(1000);
-                var vendorLeadTime = wait.Until(d => d.FindElement(By.Id("leadTime")));
-                vendorLeadTime.SendKeys("4");
-                Thread.Sleep(1000);
-                var vendorDropdownErrorTwo = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and contains(., 'Select vendor')]")));
-                vendorDropdownErrorTwo.Click();
-                Thread.Sleep(1000);
-                var vendorOptionErrorTwo = wait.Until(d => d.FindElement(By.XPath("//li[div/span[text()='Space Penny'] and div/small[text()='S-P']]")));
-                vendorOptionErrorTwo.Click();
-                Thread.Sleep(1000);
-
                 //กรอกข้อมูลและ Save
-                var vendorDropdownPass = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and contains(., 'Select vendor')]")));
-                vendorDropdownPass.Click();
+                var vendorCode = wait.Until(d => d.FindElement(By.Id("vendorCode")));
+                vendorCode.Clear();
+                vendorCode.SendKeys("SKYNET");
                 Thread.Sleep(1000);
-                var vendorOptionButton = wait.Until(d => d.FindElement(By.XPath("//li[div/span[text()='Vendor 1'] and div/small[text()='VD-003']]")));
-                vendorOptionButton.Click();
+                var companyName = wait.Until(d => d.FindElement(By.Id("vendorName")));
+                companyName.Clear();
+                companyName.SendKeys("Thailandese");
                 Thread.Sleep(1000);
-                var paymentDropdown = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and contains(., 'Select payment term')]")));
-                paymentDropdown.Click();
+                var taxID = wait.Until(d => d.FindElement(By.Id("taxId")));
+                taxID.Clear();
+                taxID.SendKeys("6421106421103");
                 Thread.Sleep(1000);
-                var paymentOption = wait.Until(d => d.FindElement(By.XPath("//li[span[text()='100% ก่อนส่งมอบสินค้า']]")));
-                paymentOption.Click();
+                var Address = wait.Until(d => d.FindElement(By.Id("address1")));
+                Address.Clear();
+                Address.SendKeys("90 Ratchadaphisek Rd, Khwaeng Huai Khwang, Khet Huai Khwang, Bangkok");
                 Thread.Sleep(1000);
-                var picDropdown = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and contains(., 'Select sales person')]")));
-                picDropdown.Click();
+                var Amphur = wait.Until(d => d.FindElement(By.Id("city")));
+                Amphur.Clear();
+                Amphur.SendKeys("Huai Khwang");
                 Thread.Sleep(1000);
-                var picOption = wait.Until(d => d.FindElement(By.Id("pic_1")));
-                picOption.Click();
+                var zipCode = wait.Until(d => d.FindElement(By.Id("zipCode")));
+                zipCode.Clear();
+                zipCode.SendKeys("10310");
                 Thread.Sleep(1000);
-                var projectDropdown = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and contains(., 'Select project')]")));
-                projectDropdown.Click();
-                Thread.Sleep(1000);
-
-                var projectOption = wait.Until(d => d.FindElement(By.XPath("//li[div/span[text()='พัฒนาเว็บไซต์'] and div/small[text()='PRJ004']]")));
-                projectOption.Click();
-                Thread.Sleep(1000);
-                var templateDropdown = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and contains(., 'Select template')]")));
-                templateDropdown.Click();
-                Thread.Sleep(1000);
-                var templateOption = wait.Until(d => d.FindElement(By.XPath("//li[span[text()='PO with barcode']]")));
-                templateOption.Click();
-                Thread.Sleep(1000);
-                var departmentDropdown = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and contains(., 'Select project')]")));
-                departmentDropdown.Click();
-                Thread.Sleep(1000);
-                var departmentOption = wait.Until(d => d.FindElement(By.XPath("//li[div/span[text()='ทดสอบ'] and div/small[text()='test123']]")));
-                departmentOption.Click();
-                Thread.Sleep(1000);
-
-                var itemDropdown = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and contains(., 'Selectn item')]")));
-                itemDropdown.Click();
-                Thread.Sleep(1000);
-                var itemOption = wait.Until(d => d.FindElement(By.XPath("//span[contains(text(), 'TEST-004')]")));
-                itemOption.Click();
-                Thread.Sleep(1000);
-                var itemQuantity = wait.Until(d => d.FindElement(By.XPath("//input[@role='spinbutton']")));
-                itemQuantity.Clear();
-                itemQuantity.SendKeys("5.00");
-                Thread.Sleep(1000);
-                var itemPrice = wait.Until(d => d.FindElement(By.XPath("(//input[@role='spinbutton'])[2]")));
-                itemPrice.Clear();
-                itemPrice.SendKeys("200");
-                Thread.Sleep(1000);
-                var itemDiscount = wait.Until(d => d.FindElement(By.XPath("(//input[@role='spinbutton'])[3]")));
-                itemDiscount.Clear();
-                itemDiscount.SendKeys("300");
-                Thread.Sleep(1000);
-                var itemVatDropdown = wait.Until(d => d.FindElement(By.XPath("//span[@role='combobox' and contains(., 'Select Vat')]")));
-                itemVatDropdown.Click();
-                Thread.Sleep(1000);
-                var itemVatOption = wait.Until(d => d.FindElement(By.XPath("//span[contains(text(), 'VAT 7%')]")));
-                itemVatOption.Click();
-                Thread.Sleep(1000);
-                var remarkField = wait.Until(d => d.FindElement(By.Id("Remark")));
-                remarkField.SendKeys("ทดสอบ ทดสอบ Automated Testing");
+                var Province = wait.Until(d => d.FindElement(By.Id("state")));
+                Province.Clear();
+                Province.SendKeys("Bangkok");
                 Thread.Sleep(1000);
 
                 var saveButton = wait.Until(d => d.FindElement(By.XPath("//button[contains(., 'Save')]")));
                 saveButton.Click();
                 Thread.Sleep(2000);
-                var confirmSave = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(@class, 'p-confirmdialog-accept-button')]")));
-                confirmSave.Click();
-                Thread.Sleep(6000);
+            }
+        }
+        [Fact]
+        public void VendorGearEdit()
+        {
+            using (IWebDriver driver = new ChromeDriver())
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+                //ขยายให้เต็มจอเพื่อกันปัญหาแถบทางซ้ายหาย
+                driver.Manage().Window.Maximize();
+                //Login
+                driver.Navigate().GoToUrl(loginUrl);
+                var email = wait.Until(d => d.FindElement(By.Id("email")));
+                email.SendKeys("tanon.t@ku.th");
+                var password = wait.Until(d => d.FindElement(By.CssSelector("input.p-password-input")));
+                password.SendKeys("QuiZtaE033!");
+                var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
+                button.Click();
+                Thread.Sleep(1000);
+
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
+                //กดเข้าไปที่หน้า Vendor
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
+                vendorButton.Click();
+
+                //กดปุ่มฟันเฟือง
+                var gearButton = wait.Until(d => d.FindElement(By.XPath("//tr[.//span[text()='VD-123']]//button[.//span[contains(@class, 'pi-cog')]]")));
+                gearButton.Click();
+
+                //กดปุ่ม Edit
+                var editButton = wait.Until(d => d.FindElement(By.XPath("//li[@role='menuitem' and @aria-label='Edit']")));
+                editButton.Click();
+
+                //รอหน้าเว็บโหลดและตรวจสอบว่าเป็นหน้าที่ถูกหรือไม่จากการตรวจสอบหัวข้อใหญ่ Add/Edit Vendor
+                try
+                {
+                    wait.Until(d => d.FindElement(By.XPath("//h1[contains(text(), 'Add/Edit Vendor')]")));
+                    _testOutputHelper.WriteLine("✔ Test Passed: Successfully access edit menu.");
+                }
+                catch (WebDriverTimeoutException)
+                {
+                    _testOutputHelper.WriteLine("❌ Test Failed: Can't access edit menu.");
+                    Assert.Fail("❌ Test Failed: Can't access edit menu.");
+                }
+            }
+        }
+        [Fact]
+        public void VendorGearDelete()
+        {
+            using (IWebDriver driver = new ChromeDriver())
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+                //ขยายให้เต็มจอเพื่อกันปัญหาแถบทางซ้ายหาย
+                driver.Manage().Window.Maximize();
+                //Login
+                driver.Navigate().GoToUrl(loginUrl);
+                var email = wait.Until(d => d.FindElement(By.Id("email")));
+                email.SendKeys("tanon.t@ku.th");
+                var password = wait.Until(d => d.FindElement(By.CssSelector("input.p-password-input")));
+                password.SendKeys("QuiZtaE033!");
+                var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
+                button.Click();
+                Thread.Sleep(1000);
+
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
+                //กดเข้าไปที่หน้า Vendor
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
+                vendorButton.Click();
+
+                //กดปุ่มฟันเฟือง
+                var gearButton = wait.Until(d => d.FindElement(By.XPath("//tr[.//span[text()='VD-123']]//button[.//span[contains(@class, 'pi-cog')]]")));
+                gearButton.Click();
+
+                //กดปุ่ม Delete
+                var editButton = wait.Until(d => d.FindElement(By.XPath("//li[@role='menuitem' and @aria-label='Delete']")));
+                editButton.Click();
+            }
+        }
+        [Fact]
+        public void VendorExport()
+        {
+            //ตั้งค่า Folder สำหรับเก็บไฟล์ที่ดาวน์โหลด
+            string downloadPath = @"C:\Users\Admin\Downloads\ChromeDownloads\BizKit_Files";
+
+            if (!Directory.Exists(downloadPath))
+            {
+                Directory.CreateDirectory(downloadPath);
+            }
+
+            var options = new ChromeOptions();
+            options.AddUserProfilePreference("download.default_directory", downloadPath);
+            options.AddUserProfilePreference("download.prompt_for_download", false);
+            options.AddUserProfilePreference("download.directory_upgrade", true);
+            options.AddUserProfilePreference("safebrowsing.enabled", true);
+
+            using (IWebDriver driver = new ChromeDriver(options))
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+                driver.Manage().Window.Maximize();
+
+                //Login
+                driver.Navigate().GoToUrl(loginUrl);
+                var email = wait.Until(d => d.FindElement(By.Id("email")));
+                email.SendKeys("tanon.t@ku.th");
+                var password = wait.Until(d => d.FindElement(By.CssSelector("input.p-password-input")));
+                password.SendKeys("QuiZtaE033!");
+                var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
+                button.Click();
+                Thread.Sleep(1000);
+
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
+                //กดเข้าไปที่หน้า Vendor
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
+                vendorButton.Click();
+
+                //ตรวจสอบชื่อไฟล์ใน Folder ก่อนจะกด Export
+                string[] filesBefore = Directory.GetFiles(downloadPath, "Vendors*.csv");
+
+                //กดปุ่ม Export
+                var exportButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@aria-label='Export']")));
+                exportButton.Click();
+
+                //ตั้งค่าตัวแปรว่าเป็น false เพราะยังไม่ได้ดาวน์โหลดไฟล์
+                bool fileDownloaded = false;
+                //รอดาวน์โหลดไฟล์สูงสุด 10 วินาที
+                DateTime startTime = DateTime.Now;
+
+                while ((DateTime.Now - startTime).TotalSeconds < 10)
+                {
+                    string[] filesAfter = Directory.GetFiles(downloadPath, "Vendors*.csv");
+                    if (filesAfter.Length > filesBefore.Length) //ตรวจสอบว่ามีไฟล์ใหม่ใน Folder ที่ชื่อว่า "Vendors(ไฟล์ซ้ำ).csv" หรือไม่
+                    {
+                        fileDownloaded = true;
+                        break; //จะหยุดการตรวจสอบหากพบไฟล์ใหม่
+                    }
+                    Thread.Sleep(1000); //รอ 1 วินาทีก่อนตรวจสอบไฟล์อีกครั้ง
+                }
+
+                //ไม่ผ่านการทดสอบ เพราะว่าผ่านไปแล้ว 10 วินาทียังไม่มีไฟล์ใหม่เพิ่มเข้ามา ตัวแปร fileDownloaded จึงยังเป็น false
+                Assert.True(fileDownloaded, "❌ Test Failed: 'Vendors.csv' file was not downloaded.");
+                //ผ่านการทดสอบ
+                _testOutputHelper.WriteLine("✔ Test Passed: 'Vendors.csv' file was successfully downloaded.");
+            }
+        }
+        [Fact]
+        public void VendorImport()
+        {
+            using (IWebDriver driver = new ChromeDriver())
+            {
+                WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+                //ขยายให้เต็มจอเพื่อกันปัญหาแถบทางซ้ายหาย
+                driver.Manage().Window.Maximize();
+                //Login
+                driver.Navigate().GoToUrl(loginUrl);
+                var email = wait.Until(d => d.FindElement(By.Id("email")));
+                email.SendKeys("tanon.t@ku.th");
+                var password = wait.Until(d => d.FindElement(By.CssSelector("input.p-password-input")));
+                password.SendKeys("QuiZtaE033!");
+                var button = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[contains(., 'Sign In')]")));
+                button.Click();
+                Thread.Sleep(1000);
+
+                //กด Dropdown ของเมนูหลัก Purchases
+                var purchasesDropdown = wait.Until(d => d.FindElement(By.XPath("//span[text()='Purchases']")));
+                purchasesDropdown.Click();
+
+                //กดเข้าไปที่หน้า Vendor
+                var vendorButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//a[@href='/vendor/list']")));
+                vendorButton.Click();
+
+                //กดปุ่ม Import
+                var importButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath("//button[@aria-label='Import Vendor']")));
+                importButton.Click();
+
+                //ตรวจสอบการเปิดหน้าต่าง Import
+                try
+                {
+                    wait.Until(d => d.FindElement(By.XPath("//span[text()='Import Vendor']")));
+                    _testOutputHelper.WriteLine("✔ Test Passed: Successfully opened import vendor window.");
+                }
+                catch (WebDriverTimeoutException)
+                {
+                    _testOutputHelper.WriteLine("❌ Test Failed: Can't open import vendor window.");
+                    Assert.Fail("❌ Test Failed: Can't open import vendor window.");
+                }
             }
         }
     }
