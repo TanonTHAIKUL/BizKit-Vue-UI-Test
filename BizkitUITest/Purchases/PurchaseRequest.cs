@@ -42,6 +42,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(5000);
@@ -65,6 +68,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseOrderButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseOrderButton.Click();
                 Thread.Sleep(2000);
@@ -95,6 +101,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Order
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseOrderButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseOrderButton.Click();
 
@@ -150,6 +159,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
@@ -179,6 +191,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
@@ -240,6 +255,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 
@@ -330,6 +348,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
@@ -387,6 +408,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
@@ -483,6 +507,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
@@ -578,6 +605,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
@@ -621,6 +651,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
@@ -689,6 +722,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
@@ -748,6 +784,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
@@ -835,6 +874,9 @@ namespace Purchases
                 button.Click();
 
                 //กดเข้าไปที่หน้า Purchase Request
+                var PurchasesButton = wait.Until(d => d.FindElement(By.XPath("//div[@class='p-panelmenu-header' and @aria-label='Purchases']")));
+                PurchasesButton.Click();
+                Thread.Sleep(2000);
                 var purchaseRequestButton = wait.Until(d => d.FindElement(By.XPath("//a[@href='/purchaseRequests/list']")));
                 purchaseRequestButton.Click();
                 Thread.Sleep(2000);
